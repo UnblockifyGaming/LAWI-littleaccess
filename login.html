@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+    }
+    .container {
+      width: 300px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    a, button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover, a:hover {
+      background-color: #0056b3;
+    }
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .link a {
+      color: white;
+      text-decoration: none;
+    }
+    .link a:hover {
+      font-weight: bold;
+      scale: 1.1;
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Log In</button>
+    </form>
+
+    <div class="link">
+      <a href="create_account.html">Create Account</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Retrieve saved user data from localStorage
+      const savedUser = JSON.parse(localStorage.getItem(username));
+
+      if (savedUser && savedUser.password === password) {
+        alert("Login successful!");
+        window.location.href = "games/index.html"; // Redirect to thing.html
+      } else {
+        alert("Invalid username or password.");
+      }
+    });
+  </script>
+  <script>
+    document.getElementById("createAccountForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  // Initialize the user's data with trophies set to 0
+  const user = { email, password, trophies: 0 };
+  localStorage.setItem(username, JSON.stringify(user));
+  alert("Account created successfully! You can now log in.");
+  window.location.href = "login.html"; // Redirect to login page
+});
+
+  </script>
+</body>
+</html>
