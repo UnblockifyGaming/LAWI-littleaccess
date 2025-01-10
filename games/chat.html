@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawi - Test page</title>
+    <link rel="icon" href="download.jpg">
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+    <button id="chatButton" class="chat-button">Chat</button>
+<div id="chatSidebar" class="chat-sidebar">
+    <div class="sidebar-header">
+        <h2>Chat</h2>
+        <button id="closeSidebar" class="close-sidebar">✖</button>
+    </div>
+    <div class="sidebar-content">
+        <div class="chat-messages" id="chatMessages"></div>
+<div class="chat-input">
+    <input type="text" id="chatInputField" placeholder="Type your message..." />
+    <button id="sendMessageButton">Send</button>
+</div>
+        <p>Welcome to the chat!</p>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const chatButton = document.getElementById('chatButton');
+    const chatSidebar = document.getElementById('chatSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+
+    const messagesRef = firebase.database().ref('messages');
+
+    chatButton.addEventListener('click', () => {
+        console.log('Chat button clicked');
+        chatSidebar.classList.add('open');
+    });
+
+    closeSidebar.addEventListener('click', () => {
+        console.log('Close button clicked');
+        chatSidebar.classList.remove('open');
+    });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const chatButton = document.getElementById('chatButton');
+    const chatSidebar = document.getElementById('chatSidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInputField = document.getElementById('chatInputField');
+    const sendMessageButton = document.getElementById('sendMessageButton');
+
+    chatButton.addEventListener('click', () => {
+        chatSidebar.classList.add('open');
+    });
+
+    closeSidebar.addEventListener('click', () => {
+        chatSidebar.classList.remove('open');
+    });
+
+    // Mock chat storage
+    const messages = [];
+
+    // Handle sending messages
+    function sendMessage() {
+        const message = chatInputField.value.trim();
+        if (message) {
+            messages.push(message);
+            displayMessages();
+            chatInputField.value = ''; // Clear input field
+        }
+    }
+    
+    function displayMessages() {
+        chatMessages.innerHTML = messages
+            .map((msg, index) => `<div><strong>User ${index + 1}:</strong> ${msg}</div>`)
+            .join('');
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+    }
+
+    sendMessageButton.addEventListener('click', sendMessage);
+
+    chatInputField.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
+<script>
+    // Your Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCawHRjJZVWIAFjJFidSXb-8_IPG1Xg3Ek",
+        authDomain: "lawichat.firebaseapp.com",
+        databaseURL: "https://lawichat-default-rtdb.firebaseio.com/",
+        projectId: "lawichat",
+        storageBucket: "lawichat.firebasestorage.app",
+        messagingSenderId: "586441819070",
+        appId: "1:586441819070:web:87b8bc9d62a1c4dc94afef"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Reference to your database location
+const messagesRef = db.ref("messages");
+
+// Sending a message
+function sendMessage(content) {
+    const message = {
+        text: content,
+        timestamp: Date.now()
+    };
+    messagesRef.push(message); // Push message to the database
+}
+
+// Listening for new messages
+messagesRef.on("child_added", (snapshot) => {
+    const message = snapshot.val();
+    displayMessage(message); // Function to update the UI
+});
+
+function displayMessage(message) {
+    const chatBox = document.getElementById("chat-box"); // Replace with your chat container's ID
+    const messageElement = document.createElement("div");
+    messageElement.textContent = message.text;
+    chatBox.appendChild(messageElement);
+}
+
+</script>
+
+    <h1 class="warning">The chat feature is still being worked on. There may be some bugs.</h1><br>
+    <h1 class="normtext">To begin, click the "Chat" button in the bottom right.</h1>
+    
+</body>
+</html>

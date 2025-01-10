@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="download.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawi - Bitcoin Clicker</title>
+    <style>    
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    
+        .top-left-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #124206; 
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: rgb(3, 75, 9);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <script>// Create the mod menu button
+        const modButton = document.createElement('button');
+        modButton.textContent = 'Mod menu';
+        modButton.style.position = 'fixed';
+        modButton.style.bottom = '10px';
+        modButton.style.left = '50%';
+        modButton.style.transform = 'translateX(-50%)';
+        modButton.style.padding = '10px 20px';
+        modButton.style.backgroundColor = '#FFD700';
+        modButton.style.color = '#000';
+        modButton.style.border = 'none';
+        modButton.style.borderRadius = '5px';
+        modButton.style.fontWeight = 'bold';
+        modButton.style.cursor = 'pointer';
+        modButton.style.zIndex = '10000';
+        document.body.appendChild(modButton);
+        
+        // Create the mod menu
+        const modMenu = document.createElement('div');
+        modMenu.style.display = 'none';
+        modMenu.style.position = 'fixed';
+        modMenu.style.top = '100px';
+        modMenu.style.left = '50%';
+        modMenu.style.transform = 'translateX(-50%)';
+        modMenu.style.width = '300px';
+        modMenu.style.padding = '20px';
+        modMenu.style.backgroundColor = '#FFFFE0';
+        modMenu.style.border = '2px solid #FFD700';
+        modMenu.style.borderRadius = '10px';
+        modMenu.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.2)';
+        modMenu.style.fontFamily = 'Arial, sans-serif';
+        modMenu.style.color = '#000';
+        modMenu.style.zIndex = '10000';
+        modMenu.style.cursor = 'move';
+        document.body.appendChild(modMenu);
+        
+        // Improved dragging functionality with requestAnimationFrame
+        let isDragging = false;
+        let startX, startY, currentX, currentY, offsetX = 0, offsetY = 0;
+        
+        modMenu.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          startX = e.clientX - offsetX;
+          startY = e.clientY - offsetY;
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+        });
+        
+        function onMouseMove(e) {
+          if (!isDragging) return;
+          currentX = e.clientX;
+          currentY = e.clientY;
+          offsetX = currentX - startX;
+          offsetY = currentY - startY;
+        
+          // Use requestAnimationFrame to update position smoothly
+          requestAnimationFrame(() => {
+            modMenu.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+          });
+        }
+        
+        function onMouseUp() {
+          isDragging = false;
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+        }
+        
+        // Create an input for the code
+        const codeInput = document.createElement('input');
+        codeInput.type = 'password';
+        codeInput.placeholder = 'Enter Code';
+        codeInput.style.width = '100%';
+        codeInput.style.marginBottom = '10px';
+        codeInput.style.padding = '5px';
+        codeInput.style.border = '1px solid #FFD700';
+        codeInput.style.borderRadius = '5px';
+        modMenu.appendChild(codeInput);
+        
+        // Create a submit button for the code
+        const submitCodeButton = document.createElement('button');
+        submitCodeButton.textContent = 'Submit Code';
+        submitCodeButton.style.width = '100%';
+        submitCodeButton.style.marginBottom = '10px';
+        submitCodeButton.style.padding = '10px';
+        submitCodeButton.style.backgroundColor = '#FFD700';
+        submitCodeButton.style.color = '#000';
+        submitCodeButton.style.border = 'none';
+        submitCodeButton.style.borderRadius = '5px';
+        submitCodeButton.style.fontWeight = 'bold';
+        submitCodeButton.style.cursor = 'pointer';
+        modMenu.appendChild(submitCodeButton);
+        
+        // Create the cheat buttons
+        const button1 = document.createElement('button');
+        button1.textContent = 'Bitcoins/1k';
+        button1.style.width = '100%';
+        button1.style.marginBottom = '10px';
+        button1.style.padding = '10px';
+        button1.style.backgroundColor = '#FFD700';
+        button1.style.color = '#000';
+        button1.style.border = 'none';
+        button1.style.borderRadius = '5px';
+        button1.style.fontWeight = 'bold';
+        button1.style.cursor = 'pointer';
+        button1.style.display = 'none';
+        
+        const button2 = document.createElement('button');
+        button2.textContent = 'Bitcoins/s/1k';
+        button2.style.width = '100%';
+        button2.style.padding = '10px';
+        button2.style.backgroundColor = '#FFD700';
+        button2.style.color = '#000';
+        button2.style.border = 'none';
+        button2.style.borderRadius = '5px';
+        button2.style.fontWeight = 'bold';
+        button2.style.cursor = 'pointer';
+        button2.style.display = 'none';
+        
+        // Add event listeners to the cheat buttons
+        button1.addEventListener('click', () => {
+          console.log('Running Bitcoins/1k code');
+          bitcoins *= 1000;
+        });
+        
+        button2.addEventListener('click', () => {
+          console.log('Running Bitcoins/s/1k code');
+          bitcoinRate *= 1000;
+        });
+        
+        modMenu.appendChild(button1);
+        modMenu.appendChild(button2);
+        
+        // Create a "Close menu" button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close menu';
+        closeButton.style.width = '100%';
+        closeButton.style.padding = '10px';
+        closeButton.style.backgroundColor = '#FF6347';
+        closeButton.style.color = '#FFF';
+        closeButton.style.border = 'none';
+        closeButton.style.borderRadius = '5px';
+        closeButton.style.fontWeight = 'bold';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.marginTop = '10px';
+        
+        // Add event listener to close the mod menu
+        closeButton.addEventListener('click', () => {
+          modMenu.style.display = 'none';
+        });
+        
+        modMenu.appendChild(closeButton);
+        
+        // Show the mod menu on button click
+        modButton.addEventListener('click', () => {
+          modMenu.style.display = 'block';
+        });
+        
+        // Verify the code and show cheat buttons
+        submitCodeButton.addEventListener('click', () => {
+          const code = codeInput.value;
+          if (code === 'Mod$Menu$') {
+            button1.style.display = 'block';
+            button2.style.display = 'block';
+            codeInput.style.display = 'none';
+            submitCodeButton.style.display = 'none';
+            alert('Code accepted! Mod menu unlocked.');
+          } else {
+            alert('Invalid Code');
+          }
+        });
+        </script>
+    <a href="index.html" class="top-left-button">L</a>
+    <iframe src="https://somebitcoins.glorious-victorious.com/" frameborder="0"></iframe>
+</body>
+</html>

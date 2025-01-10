@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawi - The dark path...</title>
+    <link rel="icon" href="download.jpg">
+    <style>
+        /* General Page Styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            overflow: hidden;
+        }
+
+        /* Matrix Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Center Button */
+        .inject-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            background-color: rgb(207, 10, 207);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            text-decoration: none;
+        }
+
+        /* Hover Effect for Button */
+        .inject-button:hover {
+            transform: scale(1.05) translate(-50%, -50%);
+            background-color: darkviolet;
+        }
+    </style>
+</head>
+<body>
+    <!-- Center Button -->
+    <a href="hackstarter.html" class="inject-button">Begin...</a>
+
+    <!-- Matrix Background -->
+    <canvas id="matrix"></canvas>
+
+    <script>
+        // Select the canvas and set its size
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Characters used in the falling effect
+        const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const fontSize = 16; // Size of each character
+        const columns = canvas.width / fontSize; // Number of columns
+        const drops = Array(Math.floor(columns)).fill(0); // Initialize drops
+
+        // Function to draw the falling text
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Slightly clear previous frame
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00FF00'; // Bright green color
+            ctx.font = `${fontSize}px monospace`;
+
+            // Loop through each column to render characters
+            for (let i = 0; i < drops.length; i++) {
+                const char = characters[Math.floor(Math.random() * characters.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                ctx.fillText(char, x, y);
+
+                // Reset drop when reaching the bottom or randomly
+                if (y > canvas.height && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+
+                // Increment drop position
+                drops[i]++;
+            }
+        }
+
+        // Animate the Matrix effect
+        setInterval(drawMatrix, 50);
+
+        // Adjust canvas size on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
